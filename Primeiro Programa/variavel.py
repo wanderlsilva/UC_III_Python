@@ -1,14 +1,8 @@
 #Aprendendo a criar VARIAVEIS
-nome = "Wander" #string
-idade = 19 #int
-salario = 220.20 #float
-vivo = True #boolean
+valor = 10
+nome = "João"
+resultado = True
 
 #print(nome)
-#print(idade)
-#print(salario)
-#print(vivo)
 
-#Função para descobrir o Tipo da Variavel
-print(type(nome))
-print(type(idade))
+print(type(resultado))

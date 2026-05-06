@@ -22,7 +22,7 @@
 #Abreviação de Operadores
 x = 2
 print(x) #Aqui ele imprime o valor de 2
-#x = x + x
+x = x + x
 x += 4
 print(x) #Aqui ele imprime o soma da variavel + 4 = 6
 x -= 2
