@@ -15,7 +15,6 @@ else:
     
 numero_secreto = random.randint(1, 100)
 
-
 for tentativa in range(1, total_de_tentativas + 1):
     print('Tentativa {} de {}'.format(tentativa, total_de_tentativas))
     print(f'Seus Pontos: {pontuacao}')
