@@ -1,5 +1,5 @@
 #Uma tupla com os perfis permitidos no sistema
-perfis_permitidos = ("Aluno", "Professor", "Tecnico")
+perfis_permitidos = ("Aluno", "Professor", "Tecnico", "Estagiário")
 
 #Lista armazena os usuarios cadastrados
 usuarios = []
@@ -60,6 +60,9 @@ def fazer_login():
     #Mostra a mensagem caso não encontre o usuario
     print("Login ou Senha incorreta!!!")
     
+    #Retorna vazio
+    return None
+    
 #Uma função para cadastrar novos usuários
 def cadastrar_usuario():
     
@@ -116,8 +119,55 @@ def cadastrar_usuario():
     #Mostra mensagem de sucesso
     print("Usuário cadastrado com sucesso!")
 
+#Função é responsavel por carregar os usuários do arquivo txt
+def carregar_usuarios():
+    
+    #Try para tentar abri o arquivo txt
+    try:
+        
+        #Abre o arquivo txt no modo leitura
+        arquivo = open("C:/Users/vboxuser/Documents/castrado_usuario.txt", 'r', encoding='utf-8')
+        
+        #Percorre cada linha dentro do arquivo txt
+        for linha in arquivo:
+            
+            #Remove espaço de linha
+            linha = linha.strip()
+            
+            #Verifica se a linha não está vazia
+            if linha != '':
+                
+                #Separa os dados usando ponto e virgula
+                dados = linha.split(";")
+                
+                #Cria um dicionáro para armazenar os dados do usuario
+                usuario = {
+                    "nome": dados[0],
+                    "login": dados[1],
+                    "senha": dados[2],
+                    "perfil": dados[3]
+                }
+                
+                #Adiciona o usuario dentro da lista de usuarios
+                usuarios.append(usuario)
+        
+        #Fecha o arquivo após a leitura
+        arquivo.close()
+        
+    #Caso o arquivo ainda não exista, isso aqui vai funcionar
+    except FileNotFoundError:
+        
+        #Mostra a mensagem informando que nenhum usuario foi carregado
+        print("O arquivo não foi criado ainda")
+    
+    #Sempre irá executar
+    finally:
+        
+        #Mensagem para mostrar o carregamento de usuario
+        print("Usuário carregados com sucesso!")   
+
 #Função para mostrar o menu após o login
-def menu_sistema():
+def menu_sistema(usuario_logado):
     
     #Repetição do menu
     while True:
@@ -215,7 +265,14 @@ def menu_principal():
         #Verifica se a variavel opção é igual a 2
         elif opcao == 2:
             
+            #Chama a função fazer login
             usuario_logado = fazer_login()
+            
+            #Verifica se o login deu certo
+            if usuario_logado != None:
+                
+                #Chama o menu interno
+                menu_sistema(usuario_logado)
             
         #Verifica se a variavel opção é igual a 3
         elif opcao == 3:
@@ -235,5 +292,9 @@ def menu_principal():
             
             #Mostra a mensagem de erro
             print("Opção inválida!!!")
-            
+
+#Função para carregar os usuarios cadastrados no arquivo txt
+carregar_usuarios()
+
+#Função para chamar o menu principal para iniciar o sistema
 menu_principal()
