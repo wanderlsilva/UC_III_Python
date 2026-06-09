@@ -1,8 +1,14 @@
 #Uma tupla com os perfis permitidos no sistema
 perfis_permitidos = ("Aluno", "Professor", "Tecnico", "Estagiário")
 
+#Tupla com os tipos de problemas
+tipos_problemas = ("Internet", "Computador", "Projetor", "Teclado", "Mouse")
+
 #Lista armazena os usuarios cadastrados
 usuarios = []
+
+#Lista que armazena os chamados 
+chamados = []
 
 #Função para salvar os dados do usuario em arquivo txt
 def salvar_usuario_arquivo(usuario):
@@ -11,7 +17,7 @@ def salvar_usuario_arquivo(usuario):
     try:
         
         #Abre o arquivo
-        arquivo = open('C:/Users/vboxuser/Documents/castrado_usuario.txt', 'a', encoding='utf-8')
+        arquivo = open('C:/Users/vboxuser/Documents/cadastro_usuario.txt', 'a', encoding='utf-8')
         
         #Escreve os dados do usuario no arquivo txt separando por ponto e virgula
         arquivo.write(
@@ -62,7 +68,56 @@ def fazer_login():
     
     #Retorna vazio
     return None
+
+#Função para registrar chamados
+def registrar_chamado(usuario_logado):
     
+    #Cria um dicionario para armazenar o chamado
+    chamado = {}
+    
+    chamado['usuario'] = usuario_logado['nome']
+    
+    print("Tipos de problemas")
+    
+    for problema in tipos_problemas:
+        
+        print("-", problema)
+        
+    chamado["problema"] = input("Digite o tipo do problema: ")
+    
+    if chamado["problema"] not in tipos_problemas:
+        
+        print("Tipo de problema inválido.")
+        
+        return
+    
+    chamado["descricao"] = input("Descreva o problema: ")
+    
+    chamado["status"] = "Aberto"
+    
+    chamados.append(chamado)
+    
+    salvar_chamado_arquivo(chamado)
+    
+def salvar_chamado_arquivo(chamado):
+    try:
+        arquivo_chamado = open('C:/Users/vboxuser/Documents/cadastro_chamado.txt', 'a', encoding='utf-8')
+        
+        arquivo_chamado.write(
+            chamado["usuario"] + ";" +
+            chamado["problema"] + ";" +
+            chamado["descricao"] + ";" +
+            chamado["status"] + "\n"
+        )
+        
+        arquivo_chamado.close()
+        
+    except:
+        print("Erro ao salvar chamado!!!")
+        
+    finally:
+        print("Processo salvo com sucesso")
+
 #Uma função para cadastrar novos usuários
 def cadastrar_usuario():
     
@@ -126,7 +181,7 @@ def carregar_usuarios():
     try:
         
         #Abre o arquivo txt no modo leitura
-        arquivo = open("C:/Users/vboxuser/Documents/castrado_usuario.txt", 'r', encoding='utf-8')
+        arquivo = open("C:/Users/vboxuser/Documents/cadastro_usuario.txt", 'r', encoding='utf-8')
         
         #Percorre cada linha dentro do arquivo txt
         for linha in arquivo:
@@ -201,7 +256,7 @@ def menu_sistema(usuario_logado):
         
         if opcao == 1:
             
-            print("Opção 1")
+            registrar_chamado(usuario_logado)
             
         elif opcao == 2:
         
@@ -276,7 +331,22 @@ def menu_principal():
             
         #Verifica se a variavel opção é igual a 3
         elif opcao == 3:
-            print("opção 3")
+            
+            #Verifica se não existe usuário
+            if len(usuarios) == 0:
+                
+                #Verifica se não existe usuário
+                print("Nenhum usuário cadastrado.")
+            
+            #Caso existam usuários
+            else:
+                
+                print("\nLista de usuários")
+                #Percorre a lista de usuario
+                for usuario in usuarios:
+                    
+                    #Mostra o nome, login e perfil de todos os cadastrados
+                    print(usuario['nome'], '-', usuario['login'], '-', usuario['perfil'])
             
         #Verifica se a variavel opção é igual a 4
         elif opcao == 4:
